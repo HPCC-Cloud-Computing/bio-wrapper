@@ -13,7 +13,7 @@ def init(loop):
         + TaskHandler handle cac request checkresult, checkstatus... cua task co ID = {id}
     - Khoi tao va run service
     """
-    tasks = TasksHandler()
+    tasks = JobsHandler()
     config = ConfigHandler()
     task = TaskHandler()
 
