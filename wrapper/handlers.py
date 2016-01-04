@@ -17,10 +17,21 @@ from managers import SwiftManager, Job
 import json
 
 
-def to_json(func):
-    def wrapped(self, request):
-        return web.Response(body=json.dumps(func(self, request)).encode('utf-8'))
-    return wrapped
+# Khong hieu sao may sai, tao eo hieu d m
+# def to_json(func):
+#     def wrapped(self, request):
+#         try:
+#             data = func(self, request)
+#             return web.Response(body=json.dumps(data).encode('utf-8'))
+#         except Exception as e:
+#             print('Pha 2: %s', e)
+#             data = {
+#                 'status': False,
+#                 'error_mesage': str(e)
+#             }
+#             return web.Response(body=json.dumps(data).encode('utf-8'))
+#
+#     return wrapped
 
 
 def handle_errors(func):
@@ -29,12 +40,13 @@ def handle_errors(func):
         try:
             data = func(self, request)
         except Exception as e:
-            print(e)
+            print('Pha 1: %s', e)
             data = {
                 'status': False,
                 'job_id': None,
                 'error_message': str(e)
             }
+            data = web.Response(body=json.dumps(data).encode('utf-8'))
         finally:
             return data
 
@@ -51,7 +63,7 @@ class JobsHandler(object):
         self._taskid += 1
         return str(self._taskid)
 
-    @to_json
+    # @to_json
     @handle_errors
     def runtask(self, request):
         """
@@ -76,9 +88,10 @@ class JobsHandler(object):
             'status': True,
             'job_id': str(self._taskid),
         }
-        return data
+        # return data
+        return web.Response(body=json.dumps(data).encode('utf-8'))
 
-    @to_json
+    # @to_json
     @handle_errors
     def listjobs(self, request):
         """
@@ -86,39 +99,37 @@ class JobsHandler(object):
         :param request: no requirement
         :return:
         """
-        if not self.list_of_job:
-            return {
-                'empty': True,
-                'jobs': '[]',
-                'status': True
-            }
-        else:
-            return {
-                'empty': False,
-                'jobs': self.list_of_job.keys(),
-                'status': True
-            }
-        # data = {
-        #     'jobs': self.list_of_job.keys(),
-        #     'status': True,
-        # }
+        data =  {
+            'empty': False,
+            'jobs': [key for key in self.list_of_job.keys()],
+            'status': True
+        }
+        return web.Response(body=json.dumps(data).encode('utf-8'))
 
-
-    @to_json
+    # @to_json
     @handle_errors
     def job(self, request):
-        job_id = request.POST['job_id']
+        """
+        GET method
+        :param request:
+        :return:
+        """
+        job_id = request.GET['job_id']
         job = self.list_of_job[job_id]
         result, error = yield from job.process
+
         data = {
             'job_id': job_id,
             'job_status': job.process.done() and not job.error,
-            'result': result,
+            'job_error': job.error,
+            'result': result.decode('utf-8'),
+            'error': error.decode('utf-8'),
             'status': True
         }
-        return data
+        # return data
+        return web.Response(body=json.dumps(data).encode('utf-8'))
 
-    @to_json
+    # @to_json
     @handle_errors
     def canceljob(self, request):
         """
@@ -127,12 +138,14 @@ class JobsHandler(object):
         :param request: require job_id
         :return:
         """
-        request.post()
+        yield from request.post()
         job_id = request.POST['job_id']
         job = self.list_of_job[job_id]
+        prevstatus = job.process.cancel()
         data = {
-            'prevstatus': job.process.cancel(),
+            'prevstatus': prevstatus,
             'job_id': job_id,
             'status': True,
         }
-        return data
+
+        return web.Response(body=json.dumps(data).encode('utf-8'))

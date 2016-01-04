@@ -55,8 +55,8 @@ class Job(object):
     @asyncio.coroutine
     def run_process(self):
         # dictionary = self.swift.get_data()
-        dictionary = '/'
-        commandline = u"ll %s" % dictionary
+        # dictionary = '/'
+        commandline = u"ll" #% dictionary
         # Create the subprocess, redirect the standard output into a pipe
         create = asyncio.create_subprocess_shell(cmd=commandline,
                                                  stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
@@ -68,3 +68,6 @@ class Job(object):
             print(err)
             self.error = True
         return out, err
+
+    def __str__(self):
+        return "Job Object"
