@@ -56,7 +56,7 @@ class Job(object):
     def run_process(self):
         # dictionary = self.swift.get_data()
         # dictionary = '/'
-        commandline = u"ll" #% dictionary
+        commandline = u"ls -l" #% dictionary
         # Create the subprocess, redirect the standard output into a pipe
         create = asyncio.create_subprocess_shell(cmd=commandline,
                                                  stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
@@ -65,7 +65,6 @@ class Job(object):
 
         out, err = yield from proc.communicate()
         if err:
-            print(err)
             self.error = True
         return out, err
 

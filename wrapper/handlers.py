@@ -15,40 +15,22 @@
 from aiohttp import web
 from managers import SwiftManager, Job
 import json
-
-
-# Khong hieu sao may sai, tao eo hieu d m
-# def to_json(func):
-#     def wrapped(self, request):
-#         try:
-#             data = func(self, request)
-#             return web.Response(body=json.dumps(data).encode('utf-8'))
-#         except Exception as e:
-#             print('Pha 2: %s', e)
-#             data = {
-#                 'status': False,
-#                 'error_mesage': str(e)
-#             }
-#             return web.Response(body=json.dumps(data).encode('utf-8'))
-#
-#     return wrapped
+import asyncio
 
 
 def handle_errors(func):
-    def wrapped(self, request):
-        data = {}
+    def wrapped(s, request):
+
         try:
-            data = func(self, request)
+            data = yield from func(s, request)
+            return data
         except Exception as e:
-            print('Pha 1: %s', e)
+            message = "%s: %s" % (type(e).__name__, e)
             data = {
                 'status': False,
-                'job_id': None,
-                'error_message': str(e)
+                'error_message': message
             }
-            data = web.Response(body=json.dumps(data).encode('utf-8'))
-        finally:
-            return data
+            return web.Response(body=json.dumps(data).encode('utf-8'))
 
     return wrapped
 
@@ -63,8 +45,8 @@ class JobsHandler(object):
         self._taskid += 1
         return str(self._taskid)
 
-    # @to_json
     @handle_errors
+    @asyncio.coroutine
     def runtask(self, request):
         """
         POST method
@@ -91,29 +73,30 @@ class JobsHandler(object):
         # return data
         return web.Response(body=json.dumps(data).encode('utf-8'))
 
-    # @to_json
     @handle_errors
+    @asyncio.coroutine
     def listjobs(self, request):
         """
         GET method
         :param request: no requirement
         :return:
         """
-        data =  {
+        data = {
             'empty': False,
             'jobs': [key for key in self.list_of_job.keys()],
             'status': True
         }
         return web.Response(body=json.dumps(data).encode('utf-8'))
 
-    # @to_json
     @handle_errors
+    @asyncio.coroutine
     def job(self, request):
         """
         GET method
         :param request:
         :return:
         """
+
         job_id = request.GET['job_id']
         job = self.list_of_job[job_id]
         result, error = yield from job.process
@@ -126,11 +109,11 @@ class JobsHandler(object):
             'error': error.decode('utf-8'),
             'status': True
         }
-        # return data
+
         return web.Response(body=json.dumps(data).encode('utf-8'))
 
-    # @to_json
     @handle_errors
+    @asyncio.coroutine
     def canceljob(self, request):
         """
         POST method

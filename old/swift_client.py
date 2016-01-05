@@ -1,4 +1,4 @@
-import swiftclient
+import swiftclient # $ sudo pip3 install python-swiftclient
 user = 'admin'
 key = 'baogavn'
 tenant = 'admin'
@@ -8,7 +8,7 @@ conn = swiftclient.client.Connection(
 	    tenant_name=tenant,
 	    auth_version='2.0',
         key=key,
-        authurl='http://controller:5000/v2.0',
+        authurl='http://controller:5000/v2.0'
 )
 
 container_name = 'my-new-container'
