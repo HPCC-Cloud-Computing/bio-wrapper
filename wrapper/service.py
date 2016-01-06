@@ -35,7 +35,7 @@ def init(loop):
     app.router.add_route('POST', '/canceljob/', jobs.canceljob, name='canceljob')
 
     handler = app.make_handler()
-    srv = yield from loop.create_server(handler, '0.0.0.0', 8080)
+    srv = yield from loop.create_server(handler, '0.0.0.0', 8081)
     print("Server started at http://0.0.0.0:8080")
     return srv, handler
 

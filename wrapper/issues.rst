@@ -96,5 +96,5 @@ Issue 3: No module named 'keystoneclient'
         http_response_content=body)
     swiftclient.exceptions.ClientException: Object PUT failed: http://192.168.145.132:8080/v1/AUTH_3cae5d54604b4473bb1274ec18a1d686/dsafuashfio/1 404 Not Found  [first 60 chars of response] b'<html><h1>Not Found</h1><p>The resource could not be found.<'
 
-- Commit have issue:
+- Commit have issue: eed95114e7134da66047e578b88485134790dac4
 - Commit fix:

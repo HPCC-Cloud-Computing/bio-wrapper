@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import swiftclient
+import swiftclient.exceptions
 import asyncio
 import config
 
@@ -24,14 +25,14 @@ class SwiftManager(object):
     def __init__(self, user, key, tenant, container_name, file_name, out_file_name,
                  authurl='http://192.168.145.132:5000/v2.0'):
         """
-
+        if not `container_name` check out whether container exist? if no Exception, not to create container.
+        else check out whether container exist?
         :param user:
         :param key:
         :param tenant:
         :param container_name:
         :param file_name:
         :param out_file_name:
-        :param auth_version:
         :param authurl:
         :return:
         """
@@ -44,10 +45,20 @@ class SwiftManager(object):
         )
 
         self.file_name = file_name
+
         self.out_file_name = out_file_name
+
         if not container_name:
             self.container_name = config.INSTANCE_NAME
-            self.conn.put_container(self.container_name)
+            # check out whether container exist? if no Exception, not to create container.
+            try:
+                self.conn.get_container(self.container_name)
+            except swiftclient.exceptions.ClientException:
+                self.conn.put_container(self.container_name)
+        else:
+            self.container_name = container_name
+            # check out whether container exist?
+            self.conn.get_container(self.container_name)
 
     @asyncio.coroutine
     def get_data(self):
@@ -65,7 +76,7 @@ class SwiftManager(object):
         :param out:
         :return: tra ve
         """
-        return self.conn.put_object('dsafuashfio', self.out_file_name,
+        return self.conn.put_object(self.container_name, self.out_file_name,
                                     contents=out,
                                     content_type='text/plain')
 

@@ -65,7 +65,6 @@ class JobsHandler(object):
         - key
         - tenant
         - container_name
-        - auth_version
         - authurl
         - file_name: if None, it's firt step on WorkFlow
         :param aiohttp.web.Request request: require user, key, tenant, container_name, auth_version, authurl, file_name
@@ -105,35 +104,46 @@ class JobsHandler(object):
         }
         return web.Response(body=json.dumps(data).encode('utf-8'))
 
-    # @handle_errors
+    @handle_errors
     @asyncio.coroutine
     def job(self, request):
         """
-        GET method
-        :param aiohttp.web.Request request:
+        GET method with payload:
+        - job_id
+        :param aiohttp.web.Request request: required job_id
         :return:
         """
 
         job_id = request.GET['job_id']
         job = self.list_of_job[job_id]
-        out, error = yield from job.process
-
-        data = {
-            'job_id': job_id,
-            'job_done': job.process.done(),
-            'job_error': job.error,
-            'out': out.decode('utf-8'),
-            'error': error.decode('utf-8'),
-            'status': True
-        }
-
+        data = {}
+        try:
+            out, error = yield from job.process
+            data = {
+                'job_id': job_id,
+                'job_done': job.process.done(),
+                'job_error': job.error,
+                'out': out.decode('utf-8'),
+                'error': error.decode('utf-8'),
+                'status': True
+            }
+        except Exception as e:
+            message = "%s: %s" % (type(e).__name__, e)
+            data = {
+                'job_id': job_id,
+                'job_done': job.process.done(),
+                'job_error': job.error,
+                'error_message': message,
+                'status': True
+            }
         return web.Response(body=json.dumps(data).encode('utf-8'))
 
     @handle_errors
     @asyncio.coroutine
     def canceljob(self, request):
         """
-        POST method
+        POST method with payload:
+        - job_id
         If prevstatus = True -> job is running, else job is already done.
         :param aiohttp.web.Request request: require job_id
         :return:

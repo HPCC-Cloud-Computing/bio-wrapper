@@ -22,7 +22,6 @@ container_name = 'my-new-container'
 #                     content_type='text/plain')
 
 
-
 conn.get_container(container_name)
 
 for container in conn.get_account()[1]:
