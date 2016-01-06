@@ -19,7 +19,18 @@ import asyncio
 
 
 def handle_errors(func):
+    """
+
+    :param func:
+    :return:
+    """
     def wrapped(s, request):
+        """
+
+        :param s:
+        :param request:
+        :return:
+        """
 
         try:
             data = yield from func(s, request)
@@ -49,28 +60,34 @@ class JobsHandler(object):
     @asyncio.coroutine
     def runtask(self, request):
         """
-        POST method
-
-        :param request: require user, key, tenant, container_name, auth_version, authurl
-        :return: job_id
+        POST method with payload:
+        - user
+        - key
+        - tenant
+        - container_name
+        - auth_version
+        - authurl
+        - file_name: if None, it's firt step on WorkFlow
+        :param aiohttp.web.Request request: require user, key, tenant, container_name, auth_version, authurl, file_name
+        :return: aiohttp.web.Response: string job_id
         """
-        request.post()
-        # user = request.POST['user']
-        # key = request.POST['key']
-        # tenant = request.POST['tenant']
-        # container_name = request.POST['container_name']
+        yield from request.post()
+        user = request.POST['user']
+        key = request.POST['key']
+        tenant = request.POST['tenant']
+        container_name = request.POST.get('container_name', None)
         # auth_version = request.POST['auth_version']
-        # authurl = request.POST['authurl']
+        authurl = request.POST['authurl']
+        file_name = request.POST.get('file_name', None)
 
-        # swift = SwiftManager(user, key, tenant, container_name, auth_version, authurl)
-        # job = Job(swift)
-        job = Job(False)
-        self.list_of_job[self._get_job_id()] = job
+        swift = SwiftManager(user, key, tenant, container_name,
+                             file_name, self._get_job_id(), authurl)
+        job = Job(swift, bool(not file_name))
+        self.list_of_job[str(self._taskid)] = job
         data = {
             'status': True,
             'job_id': str(self._taskid),
         }
-        # return data
         return web.Response(body=json.dumps(data).encode('utf-8'))
 
     @handle_errors
@@ -78,7 +95,7 @@ class JobsHandler(object):
     def listjobs(self, request):
         """
         GET method
-        :param request: no requirement
+        :param aiohttp.web.Request request: no requirement
         :return:
         """
         data = {
@@ -88,24 +105,24 @@ class JobsHandler(object):
         }
         return web.Response(body=json.dumps(data).encode('utf-8'))
 
-    @handle_errors
+    # @handle_errors
     @asyncio.coroutine
     def job(self, request):
         """
         GET method
-        :param request:
+        :param aiohttp.web.Request request:
         :return:
         """
 
         job_id = request.GET['job_id']
         job = self.list_of_job[job_id]
-        result, error = yield from job.process
+        out, error = yield from job.process
 
         data = {
             'job_id': job_id,
-            'job_status': job.process.done() and not job.error,
+            'job_done': job.process.done(),
             'job_error': job.error,
-            'result': result.decode('utf-8'),
+            'out': out.decode('utf-8'),
             'error': error.decode('utf-8'),
             'status': True
         }
@@ -118,7 +135,7 @@ class JobsHandler(object):
         """
         POST method
         If prevstatus = True -> job is running, else job is already done.
-        :param request: require job_id
+        :param aiohttp.web.Request request: require job_id
         :return:
         """
         yield from request.post()

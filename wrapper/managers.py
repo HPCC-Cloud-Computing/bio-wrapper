@@ -14,59 +14,120 @@
 
 import swiftclient
 import asyncio
+import config
+
+
 # from swiftclient.exceptions import ClientException
 
 
 class SwiftManager(object):
-    def __init__(self, user, key, tenant, container_name, auth_version='2.0', authurl='http://controller:5000/v2.0'):
+    def __init__(self, user, key, tenant, container_name, file_name, out_file_name,
+                 authurl='http://192.168.145.132:5000/v2.0'):
+        """
+
+        :param user:
+        :param key:
+        :param tenant:
+        :param container_name:
+        :param file_name:
+        :param out_file_name:
+        :param auth_version:
+        :param authurl:
+        :return:
+        """
         self.conn = swiftclient.client.Connection(
                 user=user,
                 tenant_name=tenant,
-                auth_version=auth_version,
+                auth_version='2.0',
                 key=key,
                 authurl=authurl
         )
 
+        self.file_name = file_name
+        self.out_file_name = out_file_name
         if not container_name:
-            self.container_name = 'example_container'
-            self.conn.put_container('example_container')
+            self.container_name = config.INSTANCE_NAME
+            self.conn.put_container(self.container_name)
 
+    @asyncio.coroutine
     def get_data(self):
         """
         Lay data tu swift, luu vao thu muc data/
-        :return: tra ve duong dan toi file data thu dc
+        :return: string: tra ve duong dan toi file data thu dc
         """
-        pass
+        obj_tuple = self.conn.get_object(self.container_name, self.file_name)
+        return obj_tuple.decode('utf-8')
 
-    def put_data(self):
+    @asyncio.coroutine
+    def put_data(self, out):
         """
         Lay du ket qua co duoc gui len swift
+        :param out:
         :return: tra ve
         """
-        pass
+        return self.conn.put_object('dsafuashfio', self.out_file_name,
+                                    contents=out,
+                                    content_type='text/plain')
 
 
 class Job(object):
-    def __init__(self, swift):
+    def __init__(self, swift, is_first):
+        """
+
+        :param swift:
+        :param is_first: If True, the job is first, va nguoc lai :v
+        :return:
+        """
+        self.first = is_first
+        # self.is_first(is_first)
         self.swift = swift
         self.error = False
         self.process = asyncio.async(self.run_process())
 
+    def is_first(self, is_first):
+        """
+        Check first.
+        Khong ro co can ham nay ko nua :v
+        if is_first: Error, because job need get_data.
+        :param bool is_first:
+        :return:
+        :raises Exception: First :v
+        """
+
+        # if not is_first:
+        #     self.error = True
+        #     raise Exception("Job have to be first")
+        if is_first:
+            self.error = True
+            raise Exception("Job have to be not first")
+
     @asyncio.coroutine
     def run_process(self):
-        # dictionary = self.swift.get_data()
-        # dictionary = '/'
-        commandline = u"ls -l" #% dictionary
-        # Create the subprocess, redirect the standard output into a pipe
-        create = asyncio.create_subprocess_shell(cmd=commandline,
-                                                 stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
-        # Wait for create
-        proc = yield from create  # proc is Process Instance
+        """
 
-        out, err = yield from proc.communicate()
-        if err:
+        :return:
+        :raise Exception: set self.error = True
+        """
+        try:
+            if not self.first:
+                dictionary = yield from self.swift.get_data()
+                commandline = u"ls -l %s" % dictionary
+            else:
+                commandline = u"ls -l"
+            # Create the subprocess, redirect the standard output into a pipe
+            create = asyncio.create_subprocess_shell(cmd=commandline,
+                                                     stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+            # Wait for create
+            proc = yield from create  # proc is Process Instance
+
+            out, err = yield from proc.communicate()
+            if err:
+                self.error = True
+            yield from self.swift.put_data(out)
+            return out, err
+        except Exception as e:
             self.error = True
-        return out, err
+            raise e
 
     def __str__(self):
         return "Job Object"
