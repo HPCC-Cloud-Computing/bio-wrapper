@@ -39,8 +39,8 @@ Issue 2: No module named 'keystoneclient'
 - Commit fix:
 
 
-Issue 3: No module named 'keystoneclient'
-=========================================
+Issue 3: I dont understand thi bug :v
+=====================================
 - Time: 06/1/2016
 - Type: env, config
 - File: ./old/test.py
@@ -57,10 +57,10 @@ Issue 3: No module named 'keystoneclient'
 
 
 
-Issue 3: No module named 'keystoneclient'
-=========================================
-- Time: 06/1/2016
-- Type: env, config
+Issue 4: Cant check out statement of swift connect, when create swift mangager
+==============================================================================
+- Time: 07/1/2016
+- Type: code
 - File: ./managers.py, method: job.runprocess
 - Fix:
 - Description: Khi tao job, thong tin swift sai ko bi bao loi.
