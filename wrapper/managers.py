@@ -52,13 +52,13 @@ class SwiftManager(object):
             self.container_name = config.INSTANCE_NAME
             # check out whether container exist? if no Exception, not to create container.
             try:
-                self.conn.get_container(self.container_name)
+                self.conn.head_container(self.container_name)
             except swiftclient.exceptions.ClientException:
                 self.conn.put_container(self.container_name)
         else:
             self.container_name = container_name
             # check out whether container exist?
-            self.conn.get_container(self.container_name)
+            self.conn.head_container(self.container_name)
 
     @asyncio.coroutine
     def get_data(self):

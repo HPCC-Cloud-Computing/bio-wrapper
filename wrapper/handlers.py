@@ -116,15 +116,14 @@ class JobsHandler(object):
 
         job_id = request.GET['job_id']
         job = self.list_of_job[job_id]
-        data = {}
         try:
             out, error = yield from job.process
             data = {
                 'job_id': job_id,
                 'job_done': job.process.done(),
                 'job_error': job.error,
-                'out': out.decode('utf-8'),
-                'error': error.decode('utf-8'),
+                'process_out': out.decode('utf-8'),
+                'process_error': error.decode('utf-8'),
                 'status': True
             }
         except Exception as e:
