@@ -7,7 +7,9 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install aiohttp==0.17.4 python-swiftclient
+RUN pip3 install aiohttp==0.17.4 \
+    python-swiftclient \
+    python-keystoneclient
 
 COPY wrapper/ /wrapper/
 

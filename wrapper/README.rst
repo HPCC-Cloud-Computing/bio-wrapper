@@ -144,4 +144,4 @@ Bio-wrapper images is available at https://hub.docker.com/r/techbk/bio-wrapper/
 Install:
 ::
 
-    docker pull techbk/bio-wrapper:0.0.4
+    docker pull techbk/bio-wrapper:0.0.5
