@@ -66,6 +66,7 @@ class JobsHandler(object):
         - tenant
         - container_name
         - authurl
+        - cm: commandline shell
         - file_name: if None, it's firt step on WorkFlow
         :param aiohttp.web.Request request: require user, key, tenant, container_name, auth_version, authurl, file_name
         :return: aiohttp.web.Response: string job_id
@@ -74,14 +75,17 @@ class JobsHandler(object):
         user = request.POST['user']
         key = request.POST['key']
         tenant = request.POST['tenant']
-        container_name = request.POST.get('container_name', None)
-        # auth_version = request.POST['auth_version']
+        # container_name = request.POST.get('container_name', None)
+        container_name = request.POST.get('container_name')
         authurl = request.POST['authurl']
-        file_name = request.POST.get('file_name', None)
+        cm = request.POST['cm']
+        # file_name = request.POST.get('file_name', None)
+        file_name = request.POST.getall('file_name', None)
 
         swift = SwiftManager(user, key, tenant, container_name,
                              file_name, self._get_job_id(), authurl)
-        job = Job(swift, bool(not file_name))
+        job = Job(swift, bool(not file_name), cm)
+
         self.list_of_job[str(self._taskid)] = job
         data = {
             'status': True,

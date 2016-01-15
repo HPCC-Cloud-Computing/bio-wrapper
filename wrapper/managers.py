@@ -67,7 +67,7 @@ class SwiftManager(object):
         :return: string: tra ve duong dan toi file data thu dc
         """
         obj_tuple = self.conn.get_object(self.container_name, self.file_name)
-        return obj_tuple.decode('utf-8')
+        return obj_tuple[1].decode('utf-8')
 
     @asyncio.coroutine
     def put_data(self, out):
@@ -80,12 +80,18 @@ class SwiftManager(object):
                                     contents=out,
                                     content_type='text/plain')
 
+    @asyncio.coroutine
+    def get_and_save_data(self):
+        obj_tuple = self.conn.get_object(self.container_name, self.file_name)
+        with open(self.file_name, 'wb') as f:
+            f.write(obj_tuple[1])
+
 
 class Job(object):
-    def __init__(self, swift, is_first):
+    def __init__(self, swift, is_first, cm):
         """
 
-        :param swift:
+        :param SwiftManager swift:
         :param is_first: If True, the job is first, va nguoc lai :v
         :return:
         """
@@ -93,7 +99,7 @@ class Job(object):
         # self.is_first(is_first)
         self.swift = swift
         self.error = False
-        self.process = asyncio.async(self.run_process())
+        self.process = asyncio.async(self.run_process(cm))
 
     def is_first(self, is_first):
         """
@@ -113,20 +119,25 @@ class Job(object):
             raise Exception("Job have to be not first")
 
     @asyncio.coroutine
-    def run_process(self):
+    def run_process(self, cm):
         """
-
+        :param string cm:
         :return:
         :raise Exception: set self.error = True
         """
         try:
-            if not self.first:
-                dictionary = yield from self.swift.get_data()
-                commandline = u"ls -l %s" % dictionary
-            else:
-                commandline = u"ls -l"
+            # if not self.first:
+            #     dictionary = yield from self.swift.get_data()
+            #     commandline = u"ls -l %s" % dictionary
+            # else:
+            #     commandline = u"ls -l"
+
+            yield from self.swift.get_and_save_data()
+
+            command = cm % self.swift.file_name
+
             # Create the subprocess, redirect the standard output into a pipe
-            create = asyncio.create_subprocess_shell(cmd=commandline,
+            create = asyncio.create_subprocess_shell(cmd=command,
                                                      stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
             # Wait for create
             proc = yield from create  # proc is Process Instance
