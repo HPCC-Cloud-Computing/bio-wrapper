@@ -1,3 +1,4 @@
+#
 # Copyright 2016 - Nguyen Quang "TechBK" Binh.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +27,6 @@ def handle_errors(func):
     """
     def wrapped(s, request):
         """
-
         :param s:
         :param request:
         :return:
@@ -64,27 +64,41 @@ class JobsHandler(object):
         - user
         - key
         - tenant
-        - container_name
         - authurl
         - cm: commandline shell
-        - file_name: if None, it's firt step on WorkFlow
-        :param aiohttp.web.Request request: require user, key, tenant, container_name, auth_version, authurl, file_name
+        - input_file: if None, swift not get data
+        - output_file: if None, swift not put data
+        :param aiohttp.web.Request request: require user, key, tenant, authurl, input_file, output_file, cm
         :return: aiohttp.web.Response: string job_id
         """
         yield from request.post()
         user = request.POST['user']
         key = request.POST['key']
         tenant = request.POST['tenant']
-        # container_name = request.POST.get('container_name', None)
-        container_name = request.POST.get('container_name')
         authurl = request.POST['authurl']
         cm = request.POST['cm']
-        # file_name = request.POST.get('file_name', None)
-        file_name = request.POST.getall('file_name', None)
+        input_file = request.POST.get('input_file')  #if Null return None
+        output_file = request.POST.get('output_file')   #if Null return None
 
-        swift = SwiftManager(user, key, tenant, container_name,
-                             file_name, self._get_job_id(), authurl)
-        job = Job(swift, bool(not file_name), cm)
+        if not input_file and '%(input_file)s' in cm:
+            raise Exception("Commandline Syntax Error: if not input_file and '%(input_file)s' in cm")
+
+        if input_file and not '%(input_file)s' in cm:
+            raise Exception("Commandline Syntax Error: if input_file and not '%(input_file)s' in cm")
+
+        if not output_file and '%(output_file)s' in cm:
+            raise Exception("Commandline Syntax Error: if not output_file and '%(output_file)s' in cm")
+
+        swift = SwiftManager(user=user,
+                             key=key,
+                             tenant=tenant,
+                             authurl=authurl,
+                             input_file=input_file,
+                             output_file=output_file,
+                             directory=self._get_job_id(),
+                             )
+        # job = Job(swift, bool(not file_name), cm)
+        job = Job(swift, cm)
 
         self.list_of_job[str(self._taskid)] = job
         data = {
