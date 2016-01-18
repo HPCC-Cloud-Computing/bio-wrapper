@@ -76,6 +76,15 @@ Explain reponse:
     - job_done: (true) true if job done, false if job unsuccess.
     - job_error: (false) true if job have error, false if otherwise.
     - process_out: result of commandline. (Note: ko can thiet lam)
+::
+
+    {"job_done": true,
+    "status": true,
+    "process_out": "\n\n\n CLUSTAL 2.1 Multiple Sequence Alignments\n\n\nSequence type explicitly set to Protein\nSequence format is Pearson\nSequence 1: WD0001      1380 aa\nSequence 2: wRi         1380 aa\nSequence 3: wPip        1380 aa\nSequence 4: wBm         1380 aa\nStart of Pairwise alignments\nAligning...\n\nSequences (1:2) Aligned. Score:  99\nSequences (1:3) Aligned. Score:  91\nSequences (1:4) Aligned. Score:  88\nSequences (2:3) Aligned. Score:  91\nSequences (2:4) Aligned. Score:  88\nSequences (3:4) Aligned. Score:  87\nGuide tree file created:   [1/test.dnd]\n\nThere are 3 groups\nStart of Multiple Alignment\n\nAligning...\nGroup 1: Sequences:   2      Score:35945\nGroup 2: Sequences:   3      Score:34466\nGroup 3: Sequences:   4      Score:33810\nAlignment Score 47431\n\nCLUSTAL-Alignment file created  [1/result.out]\n\n",
+    "job_error": false,
+    "job_id": "1"}
+
+
 * When job done but have error:
     - status: true -> request done.
     - job_id: id of job of wrapper service.
@@ -90,10 +99,6 @@ Explain reponse:
 
 Example response:
 ::
-
-    when ok:
-    {"job_id": "2", "job_done": true, "error": "", "status": true, "job_error": false,
-    "out": "total 56\n-rw-rw-r-- 1 techbk techbk   82 Th01  6 23:33 config.py"}
 
     when fail:
     {"status": false, "error_message": "Exception: This code is wrong!!!!!!!!!!!!!!!!!!!!!!!!"}
@@ -154,6 +159,7 @@ SwiftClient
 ::
 
     $ sudo pip3 install python-swiftclient
+    $ sudo pip3 install python-keystoneclient
 
 
 Practice
@@ -165,6 +171,10 @@ la du
 
 Docker Images
 =============
+Build docker images::
+
+
+
 Bio-wrapper images is available at https://hub.docker.com/r/techbk/bio-wrapper/
 
 Install:
@@ -175,11 +185,23 @@ Install:
 
 Run Test
 ========
+Clustalw
+--------
+Commandline test::
 
-::
+    clustalw -infile={input_file[0]} -type=protein -matrix=pam -outfile={output_file} -outorder=input
+    -> clustalw -infile=47.1.data.fasta -type=protein -matrix=pam -outfile=aa.align.out -outorder=input
 
-    blastn -db {input_file[0]} -query {input_file[1]} -out {output_file}
-    blastn –db nt –query nt.fsa –out results.out
+Step1: Create container name: clustalw
+Step2: Upload object name: test.fasta
+Step3: /runtask/ with parameter::
 
+    user=demo
+    key=password
+    tenant=demo
+    authurl=http://172.16.89.128:5000/v2.0/
+    cm=clustalw -infile={input_file[0]} -type=protein -matrix=pam -outfile={output_file} -outorder=input
+    input_file=clustalw/test.fasta
+    output_file=clustalw/result.out
 
-
+Step4: kiem tra container clustalw da co file result.out chua. Neu co thi ok.

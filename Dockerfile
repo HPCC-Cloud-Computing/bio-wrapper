@@ -1,11 +1,10 @@
-FROM      ubuntu:14.04
+FROM      ubuntu:15.10
 MAINTAINER TechBK <quangbinh.nguyentrong@gmail.com>
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y  \
     python3 \
     python3-pip \
-    ncbi-blast+ \
-#    clustalw \
+    clustalw \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

@@ -80,14 +80,14 @@ class JobsHandler(object):
         input_file = request.POST.get('input_file')  #if Null return None
         output_file = request.POST.get('output_file')   #if Null return None
 
-        if not input_file and '%(input_file)s' in cm:
-            raise Exception("Commandline Syntax Error: if not input_file and '%(input_file)s' in cm")
-
-        if input_file and not '%(input_file)s' in cm:
-            raise Exception("Commandline Syntax Error: if input_file and not '%(input_file)s' in cm")
-
-        if not output_file and '%(output_file)s' in cm:
-            raise Exception("Commandline Syntax Error: if not output_file and '%(output_file)s' in cm")
+        # if not input_file and '%(input_file)s' in cm:
+        #     raise Exception("Commandline Syntax Error: if not input_file and '%(input_file)s' in cm")
+        #
+        # if input_file and not '%(input_file)s' in cm:
+        #     raise Exception("Commandline Syntax Error: if input_file and not '%(input_file)s' in cm")
+        #
+        # if not output_file and '%(output_file)s' in cm:
+        #     raise Exception("Commandline Syntax Error: if not output_file and '%(output_file)s' in cm")
 
         swift = SwiftManager(user=user,
                              key=key,
@@ -136,8 +136,8 @@ class JobsHandler(object):
         job = self.list_of_job[job_id]
         is_done = job.process.done()
         if is_done:
-            try:
-                out, error = yield from job.process
+            # try:
+                out = yield from job.process
                 data = {
                     'job_id': job_id,
                     'job_done': job.process.done(),
@@ -146,15 +146,15 @@ class JobsHandler(object):
                     # 'process_error': error.decode('utf-8'),
                     'status': True
                 }
-            except Exception as e:
-                message = "%s: %s" % (type(e).__name__, e)
-                data = {
-                    'job_id': job_id,
-                    'job_done': job.process.done(),
-                    'job_error': job.error,
-                    'error_message': message,
-                    'status': True
-                }
+            # except Exception as e:
+            #     message = "%s: %s" % (type(e).__name__, e)
+            #     data = {
+            #         'job_id': job_id,
+            #         'job_done': job.process.done(),
+            #         'job_error': job.error,
+            #         'error_message': message,
+            #         'status': True
+            #     }
         else:
             data = {
                     'job_id': job_id,

@@ -23,8 +23,10 @@ import asyncio
 class SwiftManager(object):
     def __init__(self, user, key, tenant, authurl, input_file, output_file, directory):
         """
-        # if not `container_name` check out whether container exist? if no Exception, not to create container.
-        # else check out whether container exist?
+        step1: khoi tao Swift Connection
+        step2: tao directory tuong ung voi job_id
+        step3: parsing input file, kiem tra input file da ton tai hay chua
+        step4: parsing output file, kiem tra output container da ton tai hay chua, neu chua thi tao moi
 
         :param user:
         :param key:
@@ -35,6 +37,7 @@ class SwiftManager(object):
         :param str directory:
         :return:
         """
+        # step1
         self.conn = swiftclient.client.Connection(
                 user=user,
                 tenant_name=tenant,
@@ -43,20 +46,22 @@ class SwiftManager(object):
                 authurl=authurl
         )
 
-        # filename = "/foo/bar/baz.txt"¨
-        # os.makedirs(os.path.dirname(filename), exist_ok=True)
-        # with open(filename, "w") as f:
-        #     f.write("FOOBAR")
-
-        os.makedirs(os.path.dirname(directory), exist_ok=True)
+        # step2
+        os.makedirs(directory, exist_ok=True)
+        # os.makedirs(os.path.dirname(directory), exist_ok=True)
         self.directory = directory
 
+        # step3
         if input_file:
-            self.input_container, self.input_file = input_file.split('/')
-            # self.conn.head_container(self.input_container)
-            self.conn.head_object(self.input_container, self.input_file)
-            self.input_path = "%s/%s" % (directory, self.input_file)
+            self.input_container, list_of_input_file = input_file.split('/')
+            self.input_file = list_of_input_file.split('|')
+            self.input_path = []
+            for file in self.input_file:
+                self.conn.head_object(self.input_container, file)
+                self.input_path.append("%s/%s" % (directory, file))
+            # self.input_path = "%s/%s" % (directory, self.input_file)
 
+        # step4
         if output_file:
             self.output_container, self.output_file = output_file.split('/')
             try:
@@ -64,21 +69,6 @@ class SwiftManager(object):
             except swiftclient.exceptions.ClientException:
                 self.conn.put_container(self.output_container)
             self.output_path = "%s/%s" % (directory, self.output_file)
-
-        # self.input_file = input_file
-        # self.output_file = output_file
-
-        # if not container_name:
-        #     self.container_name = config.INSTANCE_NAME
-        #     # check out whether container exist? if no Exception, not to create container.
-        #     try:
-        #         self.conn.head_container(self.container_name)
-        #     except swiftclient.exceptions.ClientException:
-        #         self.conn.put_container(self.container_name)
-        # else:
-        #     self.container_name = container_name
-        #     # check out whether container exist?
-        #     self.conn.head_container(self.container_name)
 
     # @asyncio.coroutine
     # def get_data(self):
@@ -95,12 +85,10 @@ class SwiftManager(object):
         Get input file and save it!!!
         """
         if hasattr(self, 'input_file'):
-            obj_tuple = self.conn.get_object(self.input_container, self.input_file)
-            # filepath = "%s/%s" % (self.directory, self.input_file)
-            # os.makedirs(os.path.dirname(filepath), exist_ok=True)
-
-            with open(self.input_path, 'wb') as f:
-                f.write(obj_tuple[1])
+            for file, file_path in zip(self.input_file, self.input_path):
+                obj_tuple = self.conn.get_object(self.input_container, file)
+                with open(file_path, 'wb') as f:
+                    f.write(obj_tuple[1])
 
     @asyncio.coroutine
     def put_data(self, out=None):
@@ -145,7 +133,7 @@ class Job(object):
         self.swift = swift
         self.error = False
         self.cm = cm
-        self.process = asyncio.async(self.run_process(cm))
+        self.process = asyncio.async(self.run_process())
 
     # def is_first(self, is_first):
     #     """
@@ -180,7 +168,7 @@ class Job(object):
 
             yield from self.swift.get_and_save_data()
 
-            cm = self.cm % {'input_file': self.swift.input_path, 'output_file': self.swift.output_path}
+            cm = self.cm.format(input_file=self.swift.input_path, output_file=self.swift.output_path)
 
             # Create the subprocess, redirect the standard output into a pipe
             create = asyncio.create_subprocess_shell(cmd=cm,
@@ -194,7 +182,7 @@ class Job(object):
             if err:
                 raise Exception("Out: %s | Error: %s" % (out.decode('utf-8'), err.decode('utf-8')))
 
-            if '%(output_file)s' in self.cm:
+            if '{output_file}' in self.cm:
                 yield from self.swift.put_data()
             else:
                 yield from self.swift.put_data(out)
