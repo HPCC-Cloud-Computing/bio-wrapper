@@ -134,24 +134,33 @@ class JobsHandler(object):
 
         job_id = request.GET['job_id']
         job = self.list_of_job[job_id]
-        try:
-            out, error = yield from job.process
+        is_done = job.process.done()
+        if is_done:
+            try:
+                out, error = yield from job.process
+                data = {
+                    'job_id': job_id,
+                    'job_done': job.process.done(),
+                    'job_error': job.error,
+                    'process_out': out.decode('utf-8'),
+                    # 'process_error': error.decode('utf-8'),
+                    'status': True
+                }
+            except Exception as e:
+                message = "%s: %s" % (type(e).__name__, e)
+                data = {
+                    'job_id': job_id,
+                    'job_done': job.process.done(),
+                    'job_error': job.error,
+                    'error_message': message,
+                    'status': True
+                }
+        else:
             data = {
-                'job_id': job_id,
-                'job_done': job.process.done(),
-                'job_error': job.error,
-                'process_out': out.decode('utf-8'),
-                'process_error': error.decode('utf-8'),
-                'status': True
-            }
-        except Exception as e:
-            message = "%s: %s" % (type(e).__name__, e)
-            data = {
-                'job_id': job_id,
-                'job_done': job.process.done(),
-                'job_error': job.error,
-                'error_message': message,
-                'status': True
+                    'job_id': job_id,
+                    'job_done': job.process.done(),
+                    'job_error': job.error,
+                    'status': True
             }
         return web.Response(body=json.dumps(data).encode('utf-8'))
 

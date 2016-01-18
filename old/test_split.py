@@ -1,3 +1,4 @@
 string = "test/abcfile"
 
-print(string.split('/'))
+a = "container_name/inputfilename1|inputfilename2"
+print(a.split('/')[1].split('|'))

@@ -190,15 +190,16 @@ class Job(object):
             proc = yield from create  # proc is Process Instance
 
             out, err = yield from proc.communicate()
+
             if err:
-                self.error = True
+                raise Exception("Out: %s | Error: %s" % (out.decode('utf-8'), err.decode('utf-8')))
 
             if '%(output_file)s' in self.cm:
                 yield from self.swift.put_data()
             else:
-                yield from self.swift.put_data(cm)
+                yield from self.swift.put_data(out)
             yield from self.swift.clear_directory()
-            return out, err
+            return out
         except Exception as e:
             self.error = True
             yield from self.swift.clear_directory()

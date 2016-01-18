@@ -8,14 +8,6 @@ Nguyen Quang "TechBK" Binh
 Idea
 ====
 
-1. Create file job.sh, job_defile.json
-    - job.sh: la cac dong bash ma job phai thuc hien.
-    - job_define.json:
-        + first: if True, this job is maybe first. if False, nguoc lai
-        + parameters: define number of parameters
-
-2.
-
 
 API
 ===
@@ -31,9 +23,23 @@ Create a job.
     - user (string, required): username
     - key (string, required): password
     - tenant (string, required): tenant name
-    - container_name (string, unrequited):
     - authurl (string, required):
-    - file_name (string, required): if None, it's firt step on WorkFlow
+    - cm (string, required): commandline shell
+        + example: "blastn –db nt –query nt.fsa –out results.out"
+          -> "blastn -db {input_file[0]} -query {input_file[1]} -out {output_file}"
+    - input_file (string, unrequited): array input file.
+        + example: "container_name/inputfilename0|inputfilename1|..."
+    - output_file (string, unrequited): out put file.
+
+
+Explain reponse:
+
+* When ok:
+    - status: true -> request done.
+    - job_id: id of job of wrapper service.
+* When fail:
+    - status: false -> request unsuccess.
+    - error_message: error message.
 
 Example request:
 ::
@@ -61,6 +67,26 @@ Example request:
 ::
 
     http://localhost:8080/job/
+
+Explain reponse:
+
+* When job done without error:
+    - status: true -> request done.
+    - job_id: id of job of wrapper service.
+    - job_done: (true) true if job done, false if job unsuccess.
+    - job_error: (false) true if job have error, false if otherwise.
+    - process_out: result of commandline. (Note: ko can thiet lam)
+* When job done but have error:
+    - status: true -> request done.
+    - job_id: id of job of wrapper service.
+    - job_done: (true)
+    - job_error: (true) true if job have error, false if otherwise.
+    - error_message: message
+* When job not done:
+    - status: true -> request done.
+    - job_id: id of job of wrapper service.
+    - job_done: (false)
+    - job_error: true if job have error, false if otherwise.
 
 Example response:
 ::
@@ -145,3 +171,15 @@ Install:
 ::
 
     docker pull techbk/bio-wrapper:0.0.5
+
+
+Run Test
+========
+
+::
+
+    blastn -db {input_file[0]} -query {input_file[1]} -out {output_file}
+    blastn –db nt –query nt.fsa –out results.out
+
+
+
