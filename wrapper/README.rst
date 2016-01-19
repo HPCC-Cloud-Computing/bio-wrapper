@@ -5,9 +5,16 @@ Nguyen Quang "TechBK" Binh
 .. contents::
 
 
-Idea
-====
+Usage
+=====
+::
 
+    chmod +x service.py
+    ./service.py -i 0.0.0.0 -p 8080
+    or
+    ./service.py --ip=0.0.0.0 --port=8080
+
+Note: Hien tai chua dung nhung option nay!!!
 
 API
 ===
@@ -173,7 +180,9 @@ Docker Images
 =============
 Build docker images::
 
-
+    sudo docker build -t techbk/bio-wrapper:clustalw-0.0.2 .
+    sudo docker login ....
+    sudo docker push techbk/bio-wrapper:clustalw-0.0.2
 
 Bio-wrapper images is available at https://hub.docker.com/r/techbk/bio-wrapper/
 
@@ -192,9 +201,13 @@ Commandline test::
     clustalw -infile={input_file[0]} -type=protein -matrix=pam -outfile={output_file} -outorder=input
     -> clustalw -infile=47.1.data.fasta -type=protein -matrix=pam -outfile=aa.align.out -outorder=input
 
-Step1: Create container name: clustalw
-Step2: Upload object name: test.fasta
-Step3: /runtask/ with parameter::
+- Step0: Run techbk/bio-wrapper:clustalw-0.0.1 images::
+
+    sudo docker run -it -p 0.0.0.0:8080:8080 techbk/bio-wrapper:clustalw-0.0.2
+
+- Step1: Create container name: clustalw
+- Step2: Upload object name: test.fasta
+- Step3: /runtask/ with parameter::
 
     user=demo
     key=password
@@ -204,4 +217,4 @@ Step3: /runtask/ with parameter::
     input_file=clustalw/test.fasta
     output_file=clustalw/result.out
 
-Step4: kiem tra container clustalw da co file result.out chua. Neu co thi ok.
+- Step4: kiem tra container clustalw da co file result.out chua. Neu co thi ok.

@@ -97,7 +97,7 @@ class JobsHandler(object):
                              output_file=output_file,
                              directory=self._get_job_id(),
                              )
-        # job = Job(swift, bool(not file_name), cm)
+
         job = Job(swift, cm)
 
         self.list_of_job[str(self._taskid)] = job

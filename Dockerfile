@@ -15,6 +15,7 @@ RUN pip3 install aiohttp==0.17.4 \
 COPY wrapper/ /wrapper/
 
 WORKDIR /wrapper/
-CMD python3 service.py
+CMD chmod +x service.py && ./service.py -i 0.0.0.0 -p 8080
+#CMD python3 service.py
 
 EXPOSE 8080

@@ -16,6 +16,8 @@ import shutil
 import swiftclient
 import swiftclient.exceptions
 import asyncio
+
+
 # import config
 # from swiftclient.exceptions import ClientException
 
@@ -46,11 +48,6 @@ class SwiftManager(object):
                 authurl=authurl
         )
 
-        # step2
-        os.makedirs(directory, exist_ok=True)
-        # os.makedirs(os.path.dirname(directory), exist_ok=True)
-        self.directory = directory
-
         # step3
         if input_file:
             self.input_container, list_of_input_file = input_file.split('/')
@@ -59,7 +56,7 @@ class SwiftManager(object):
             for file in self.input_file:
                 self.conn.head_object(self.input_container, file)
                 self.input_path.append("%s/%s" % (directory, file))
-            # self.input_path = "%s/%s" % (directory, self.input_file)
+                # self.input_path = "%s/%s" % (directory, self.input_file)
 
         # step4
         if output_file:
@@ -69,6 +66,11 @@ class SwiftManager(object):
             except swiftclient.exceptions.ClientException:
                 self.conn.put_container(self.output_container)
             self.output_path = "%s/%s" % (directory, self.output_file)
+
+        # step2
+        os.makedirs(directory, exist_ok=True)
+        # os.makedirs(os.path.dirname(directory), exist_ok=True)
+        self.directory = directory
 
     # @asyncio.coroutine
     # def get_data(self):
