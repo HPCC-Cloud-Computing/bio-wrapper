@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0db979a6-8cc3-4ad0-98cc-f6c67b366b47" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/old/test_requests.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Dockerfile" afterPath="$PROJECT_DIR$/Dockerfile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/old/test_format.py" afterPath="$PROJECT_DIR$/old/test_format.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/old/swift_client.py" afterPath="$PROJECT_DIR$/old/swift_client.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/old/test_requests.py" afterPath="$PROJECT_DIR$/old/test_requests.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wrapper/issues.rst" afterPath="$PROJECT_DIR$/wrapper/issues.rst" />
     </list>
     <ignored path="bio-wrapper.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,6 +30,7 @@
     <SUITE FILE_PATH="coverage/bio-wrapper$handlers.coverage" NAME="handlers Coverage Results" MODIFIED="1452008465356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/wrapper" />
     <SUITE FILE_PATH="coverage/bio-wrapper$swift_client.coverage" NAME="swift_client Coverage Results" MODIFIED="1452113028551" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/old" />
     <SUITE FILE_PATH="coverage/bio-wrapper$test_format.coverage" NAME="test_format Coverage Results" MODIFIED="1453298745403" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/old" />
+    <SUITE FILE_PATH="coverage/bio-wrapper$test_requests.coverage" NAME="test_requests Coverage Results" MODIFIED="1453737714097" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/old" />
     <SUITE FILE_PATH="coverage/bio-wrapper$test_service.coverage" NAME="test_service Coverage Results" MODIFIED="1453044726725" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/old" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -46,10 +46,42 @@
         <entry file="file://$PROJECT_DIR$/wrapper/handlers.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+              <caret line="184" column="9" selection-start-line="184" selection-start-column="9" selection-end-line="184" selection-end-column="9" />
               <folding>
                 <element signature="e#592#615#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_requests.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/old/test_requests.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+              <folding>
+                <element signature="e#15#30#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="swift_client.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/old/swift_client.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.59417474">
+              <caret line="25" column="6" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="issues.rst" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/wrapper/issues.rst">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="120" column="44" selection-start-line="120" selection-start-column="44" selection-end-line="120" selection-end-column="44" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -66,16 +98,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_requests.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/old/test_requests.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5652174">
-              <caret line="13" column="86" selection-start-line="13" selection-start-column="86" selection-end-line="13" selection-end-column="86" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -87,6 +109,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="dummy://restClient/response19.txt" root0="SKIP_INSPECTION" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -106,9 +131,7 @@
         <option value="$PROJECT_DIR$/wrapper/test.py" />
         <option value="$PROJECT_DIR$/wrapper/tests.rst" />
         <option value="$PROJECT_DIR$/wrapper/tests.py" />
-        <option value="$PROJECT_DIR$/old/swift_client.py" />
         <option value="$PROJECT_DIR$/wrapper/Dockerfile" />
-        <option value="$PROJECT_DIR$/wrapper/issues.rst" />
         <option value="$PROJECT_DIR$/blastn/Dockerfile" />
         <option value="$PROJECT_DIR$/old/test_service.py" />
         <option value="$PROJECT_DIR$/test_out_file_path.py" />
@@ -122,7 +145,9 @@
         <option value="$PROJECT_DIR$/wrapper/README.rst" />
         <option value="$PROJECT_DIR$/Dockerfile" />
         <option value="$PROJECT_DIR$/old/test_format.py" />
+        <option value="$PROJECT_DIR$/wrapper/issues.rst" />
         <option value="$PROJECT_DIR$/old/test_requests.py" />
+        <option value="$PROJECT_DIR$/old/swift_client.py" />
       </list>
     </option>
   </component>
@@ -304,7 +329,167 @@
             <list>
               <KeyValuePair>
                 <option name="key" value="job_id" />
+                <option name="value" value="5" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://localhost:8080" />
+          <option name="urlPath" value="/job/" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="job_id" />
+                <option name="value" value="4" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://localhost:8080" />
+          <option name="urlPath" value="/job/" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="job_id" />
                 <option name="value" value="1" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="POST" />
+          <option name="urlBase" value="http://localhost:8080" />
+          <option name="urlPath" value="/runtask/" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="user" />
+                <option name="value" value="admin" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="key" />
+                <option name="value" value="baogavn" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="tenant" />
+                <option name="value" value="admin" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="authurl" />
+                <option name="value" value="http://172.16.89.128:5000/v2.0/" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="cm" />
+                <option name="value" value="clustalw -infile={input_file[0]} -type=protein -matrix=pam -outfile={output_file} -outorder=input" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="input_file" />
+                <option name="value" value="clustalw/test.fasta" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="output_file" />
+                <option name="value" value="clustalw/result.out" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="POST" />
+          <option name="urlBase" value="http://localhost:8080" />
+          <option name="urlPath" value="/runtask/" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="user" />
+                <option name="value" value="demo" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="key" />
+                <option name="value" value="baogavn" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="tenant" />
+                <option name="value" value="admin" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="authurl" />
+                <option name="value" value="http://172.16.89.128:5000/v2.0/" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="cm" />
+                <option name="value" value="clustalw -infile={input_file[0]} -type=protein -matrix=pam -outfile={output_file} -outorder=input" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="input_file" />
+                <option name="value" value="clustalw/test.fasta" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="output_file" />
+                <option name="value" value="clustalw/result.out" />
               </KeyValuePair>
             </list>
           </option>
@@ -1175,7 +1360,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.test_format">
+  <component name="RunManager" selected="Python.test_requests">
     <configuration default="false" name="service" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -1190,24 +1375,6 @@
       <module name="bio-wrapper" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/wrapper/service.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="test_split" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/old" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="bio-wrapper" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/old/test_split.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -1262,6 +1429,24 @@
       <module name="bio-wrapper" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/old/test_getopt.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="test_requests" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/old" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="bio-wrapper" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/old/test_requests.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -1479,18 +1664,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.service" />
-      <item index="1" class="java.lang.String" itemvalue="Python.test_split" />
-      <item index="2" class="java.lang.String" itemvalue="Python.test_out_file_path" />
-      <item index="3" class="java.lang.String" itemvalue="Python.test_format" />
-      <item index="4" class="java.lang.String" itemvalue="Python.test_getopt" />
+      <item index="1" class="java.lang.String" itemvalue="Python.test_out_file_path" />
+      <item index="2" class="java.lang.String" itemvalue="Python.test_format" />
+      <item index="3" class="java.lang.String" itemvalue="Python.test_getopt" />
+      <item index="4" class="java.lang.String" itemvalue="Python.test_requests" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.test_format" />
-        <item index="1" class="java.lang.String" itemvalue="Python.service" />
-        <item index="2" class="java.lang.String" itemvalue="Python.test_getopt" />
-        <item index="3" class="java.lang.String" itemvalue="Python.test_out_file_path" />
-        <item index="4" class="java.lang.String" itemvalue="Python.test_split" />
+        <item index="0" class="java.lang.String" itemvalue="Python.test_requests" />
+        <item index="1" class="java.lang.String" itemvalue="Python.test_format" />
+        <item index="2" class="java.lang.String" itemvalue="Python.service" />
+        <item index="3" class="java.lang.String" itemvalue="Python.test_getopt" />
+        <item index="4" class="java.lang.String" itemvalue="Python.test_out_file_path" />
       </list>
     </recent_temporary>
   </component>
@@ -1523,7 +1708,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991013" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33632863" sideWeight="0.5063197" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4300385" sideWeight="0.4936803" order="12" side_tool="false" content_ui="tabs" x="743" y="24" width="696" height="876" />
+      <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4300385" sideWeight="0.4936803" order="12" side_tool="false" content_ui="tabs" x="743" y="24" width="696" height="876" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32862645" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991013" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30038512" sideWeight="0.49591684" order="2" side_tool="false" content_ui="tabs" />
@@ -1763,24 +1948,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wrapper/issues.rst">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="81" column="33" selection-start-line="81" selection-start-column="33" selection-end-line="81" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/lib/python3.4/ntpath.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33244327">
           <caret line="250" column="4" selection-start-line="250" selection-start-column="4" selection-end-line="250" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/old/swift_client.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41941747">
-          <caret line="20" column="40" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
         </state>
       </provider>
     </entry>
@@ -1868,16 +2039,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wrapper/handlers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
-          <folding>
-            <element signature="e#592#615#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/old/test_format.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1938,10 +2099,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/wrapper/issues.rst">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="120" column="44" selection-start-line="120" selection-start-column="44" selection-end-line="120" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wrapper/handlers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="184" column="9" selection-start-line="184" selection-start-column="9" selection-end-line="184" selection-end-column="9" />
+          <folding>
+            <element signature="e#592#615#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/old/test_requests.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5652174">
-          <caret line="13" column="86" selection-start-line="13" selection-start-column="86" selection-end-line="13" selection-end-column="86" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding>
+            <element signature="e#15#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/old/swift_client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.59417474">
+          <caret line="25" column="6" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
           <folding />
         </state>
       </provider>
