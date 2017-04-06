@@ -16,7 +16,8 @@ import shutil
 import swiftclient
 import swiftclient.exceptions
 import asyncio
-
+from keystoneauth1 import session
+from keystoneauth1.identity import v3
 
 # import config
 # from swiftclient.exceptions import ClientException
@@ -39,13 +40,11 @@ class SwiftManager(object):
         :param str directory:
         :return:
         """
-        # step1
+        auth = v3.Password(auth_url=authurl, username=user, password=key, user_domain_name='Default', project_name=tenant, project_domain_name='Default')
+        keystone_session = session.Session(auth=auth)
+	# step1
         self.conn = swiftclient.client.Connection(
-                user=user,
-                tenant_name=tenant,
-                auth_version='2.0',
-                key=key,
-                authurl=authurl
+                session=keystone_session
         )
 
         # step3

@@ -1,5 +1,5 @@
-FROM      ubuntu:15.10
-MAINTAINER TechBK <quangbinh.nguyentrong@gmail.com>
+FROM      ubuntu:16.04
+MAINTAINER DAIDV <daikk115@gmail.com>
 
 RUN apt-get update && apt-get install -y  \
     python3 \
@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y  \
 
 RUN pip3 install aiohttp==0.17.4 \
     python-swiftclient \
-    python-keystoneclient
+    python-keystoneclient \
+    keystoneauth1
 
 COPY wrapper/ /wrapper/
 
