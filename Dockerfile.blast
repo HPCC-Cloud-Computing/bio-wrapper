@@ -12,7 +12,7 @@ RUN pip3 install aiohttp==0.17.4 \
     python-keystoneclient \
     keystoneauth1
 
-RUN apt-get install clustalw
+RUN apt-get install ncbi-blast+
 
 COPY wrapper/ /wrapper/
 
