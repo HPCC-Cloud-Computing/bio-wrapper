@@ -100,3 +100,6 @@ docker build -t base:v1 <thư mục chứa file Dockerfile>
 docker build -t new:v1 <thư mục chứa file Dockerfile>
 ```
 
+## NOTES
+
+- Có thể tùy vào phiên bản Swift mà người triển khai cần cập nhật Swift client và mã nguồn của wrapper để tương tác với swift. Hiện tại, nhánh develop được cập nhật dành cho Swift ở bản Ocata với python-swiftclient==3.3.0
